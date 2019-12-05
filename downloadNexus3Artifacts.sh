@@ -17,11 +17,15 @@ if [[ $? -ne 0 ]]; then
   echo "On CenOS run: sudo yum install lftp"
   echo "On other Linux OSs - find your own command."
   exit 2
+fi
 
 FULL_URL="${NEXUS_ADDRESS}/service/rest/repository/browse/${REPO}"
 mkdir repo; cd repo
+# Mirroring the dirs structure into the current location
 lftp $FULL_URL -e 'mirror .'
 
+# Listing all dirs which do not contain sub dirs
+# (Meaning - in Nexus repository they contain the actual files to download, such as jar files)
 LIST_OF_DIRS=""
 for i in `find -type d`; do
   IS_EMPTY=`ls -A -- $i`
@@ -30,6 +34,8 @@ for i in `find -type d`; do
   fi
 done
 
+# The actual files downloading part
+# It downloads every file/artifacts to the relevant location exactly the same as in the Nexus repo.
 for dir in $LIST_OF_DIRS; do
   files=`lftp ${FULL_URL} -e "ls dir; exit"| awk '{print $3}' | grep -v '\.\.'`
   if [[ -n $files ]]; then
