@@ -6,6 +6,7 @@ This repository contains a script which downloads a full Nexus 3 repository into
 ### Tested on:
 * Linux CentOS 7
 * Maven repository  
+  
 (Might work on other Linux distributions, and probably will work also for NPM and other repos, but can't promise that)
 
 ### Dependencies:
