@@ -22,7 +22,7 @@ fi
 FULL_URL="${NEXUS_ADDRESS}/service/rest/repository/browse/${REPO}"
 mkdir repo; cd repo
 # Mirroring the dirs structure into the current location
-lftp $FULL_URL -e 'mirror .'
+lftp $FULL_URL -e 'mirror .; exit'
 
 # Listing all dirs which do not contain sub dirs
 # (Meaning - in Nexus repository they contain the actual files to download, such as jar files)
