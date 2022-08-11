@@ -37,7 +37,7 @@ done
 # The actual files downloading part
 # It downloads every file/artifacts to the relevant location exactly the same as in the Nexus repo.
 for dir in $LIST_OF_DIRS; do
-  files=`lftp ${FULL_URL} -e "ls dir; exit"| awk '{print $3}' | grep -v '\.\.'`
+  files=`lftp ${FULL_URL} -e "ls ${dir}; exit"| awk '{print $3}' | grep -v '\.\.'`
   if [[ -n $files ]]; then
     for file in $files; do
       lftp ${FULL_URL} -e "mget -d $file; exit"
