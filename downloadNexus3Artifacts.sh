@@ -22,7 +22,7 @@ fi
 FULL_URL="${NEXUS_ADDRESS}/service/rest/repository/browse/${REPO}"
 mkdir repo; cd repo
 # Mirroring the dirs structure into the current location
-lftp $FULL_URL -e 'mirror .'
+lftp $FULL_URL -e 'mirror .; exit'
 
 # Listing all dirs which do not contain sub dirs
 # (Meaning - in Nexus repository they contain the actual files to download, such as jar files)
@@ -37,7 +37,7 @@ done
 # The actual files downloading part
 # It downloads every file/artifacts to the relevant location exactly the same as in the Nexus repo.
 for dir in $LIST_OF_DIRS; do
-  files=`lftp ${FULL_URL} -e "ls dir; exit"| awk '{print $3}' | grep -v '\.\.'`
+  files=`lftp ${FULL_URL} -e "ls ${dir}; exit"| awk '{print $3}' | grep -v '\.\.'`
   if [[ -n $files ]]; then
     for file in $files; do
       lftp ${FULL_URL} -e "mget -d $file; exit"
